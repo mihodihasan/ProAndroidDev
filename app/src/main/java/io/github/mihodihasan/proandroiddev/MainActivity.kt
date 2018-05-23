@@ -1,5 +1,6 @@
 package io.github.mihodihasan.proandroiddev
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
@@ -11,7 +12,7 @@ import io.github.mihodihasan.proandroiddev.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(), RepositoryRecyclerViewAdapter.OnItemClickListener {
 
     lateinit var binding: ActivityMainBinding
-
+    private val repositoryRecyclerViewAdapter = RepositoryRecyclerViewAdapter(arrayListOf(), this)
 //    var mainViewModel = MainViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,10 @@ class MainActivity : AppCompatActivity(), RepositoryRecyclerViewAdapter.OnItemCl
         binding.viewModel = viewModel
         binding.executePendingBindings()
         binding.repositoryRv.layoutManager = LinearLayoutManager(this)
-        binding.repositoryRv.adapter = RepositoryRecyclerViewAdapter(viewModel.repositories, this)
+        binding.repositoryRv.adapter = repositoryRecyclerViewAdapter//RepositoryRecyclerViewAdapter(viewModel.repositories, this)
+
+        viewModel.repositories.observe(this,
+                Observer<ArrayList<Repository>> { it?.let{ repositoryRecyclerViewAdapter.replaceData(it)} })
     }
 
     override fun onItemClick(position: Int) {

@@ -35,5 +35,8 @@ class RepositoryRecyclerViewAdapter(private var items: ArrayList<Repository>, pr
             binding.executePendingBindings()
         }
     }
-
+    fun replaceData(arrayList: ArrayList<Repository>) {
+        items = arrayList
+        notifyDataSetChanged()
+    }
 }

@@ -1,5 +1,6 @@
 package io.github.mihodihasan.proandroiddev
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 
@@ -9,7 +10,7 @@ class MainViewModel : ViewModel(){
 
     val isLoading = ObservableField<Boolean>(false)
 
-    var repositories = ArrayList<Repository>()
+    var repositories = MutableLiveData<ArrayList<Repository>>()
 
 //    val onDataReadyCallback = object : OnDataReadyCallback {
 //        override fun onDataReady(data: String) {
@@ -36,7 +37,7 @@ class MainViewModel : ViewModel(){
         repoModel.getRepositories(object : OnRepositoryReadyCallback{
             override fun onDataReady(data: ArrayList<Repository>) {
                 isLoading.set(false)
-                repositories = data
+                repositories.value = data
             }
         })
     }
