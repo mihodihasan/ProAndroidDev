@@ -1,14 +1,18 @@
 package io.github.mihodihasan.proandroiddev
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 
-class MainViewModel : ViewModel(){
-    var repoModel: RepoModel = RepoModel()
-    val text = ObservableField<String>("Old Data")
+class MainViewModel : AndroidViewModel{
+    constructor(application: Application) : super(application)
+    var gitRepoRepository: GitRepoRepository = GitRepoRepository(getApplication())
 
-    val isLoading = ObservableField<Boolean>(false)
+    val text = ObservableField("old data")
+
+    val isLoading = ObservableField(false)
 
     var repositories = MutableLiveData<ArrayList<Repository>>()
 
@@ -32,9 +36,9 @@ class MainViewModel : ViewModel(){
 //            }})
 //        }
 
-    fun loadRepositories(){
+    fun loadRepositories() {
         isLoading.set(true)
-        repoModel.getRepositories(object : OnRepositoryReadyCallback{
+        gitRepoRepository.getGitRepositories(object : OnRepositoryReadyCallback {
             override fun onDataReady(data: ArrayList<Repository>) {
                 isLoading.set(false)
                 repositories.value = data
