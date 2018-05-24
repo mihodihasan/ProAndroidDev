@@ -20,13 +20,29 @@ class GitRepoRepository(context: Context) {
 //        arrayList.add(Repository("Third", "Owner 3", 430 , false))
 //
 //        Handler().postDelayed({ onRepositoryReadyCallback.onDataReady(arrayList) },2000)
-
-        remoteDataSource.getRepositories(object: OnRepoRemoteReadyCallback{
-            override fun onRemoteDataReady(data: ArrayList<Repository>) {
-                localDataSource.saveRepositories(data)
-                onRepositoryReadyCallback.onDataReady(data)
+        netManager.isConnectedToInternet?.let {
+//            operator let in Kotlin checks nullability and returns you a value inside it
+            if (it) {
+                remoteDataSource.getRepositories(object : OnRepoRemoteReadyCallback {
+                    override fun onRemoteDataReady(data: ArrayList<Repository>) {
+                        localDataSource.saveRepositories(data)
+                        onRepositoryReadyCallback.onDataReady(data)
+                    }
+                })
+            } else {
+                localDataSource.getRepositories(object : OnRepoLocalReadyCallback {
+                    override fun onLocalDataReady(data: ArrayList<Repository>) {
+                        onRepositoryReadyCallback.onDataReady(data)
+                    }
+                })
             }
-        })
+        }
+//        remoteDataSource.getRepositories(object: OnRepoRemoteReadyCallback{
+//            override fun onRemoteDataReady(data: ArrayList<Repository>) {
+//                localDataSource.saveRepositories(data)
+//                onRepositoryReadyCallback.onDataReady(data)
+//            }
+//        })
     }
 }
 
@@ -35,5 +51,5 @@ class GitRepoRepository(context: Context) {
 //}
 
 interface OnRepositoryReadyCallback {
-    fun onDataReady(data : ArrayList<Repository>)
+    fun onDataReady(data: ArrayList<Repository>)
 }

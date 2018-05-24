@@ -6,8 +6,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 
-class MainViewModel : AndroidViewModel{
-    constructor(application: Application) : super(application)
+class MainViewModel(application: Application) : AndroidViewModel(application){
+
     var gitRepoRepository: GitRepoRepository = GitRepoRepository(getApplication())
 
     val text = ObservableField("old data")
