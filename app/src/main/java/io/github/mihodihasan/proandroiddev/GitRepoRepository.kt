@@ -2,6 +2,7 @@ package io.github.mihodihasan.proandroiddev
 
 import android.os.Handler
 import android.content.Context
+import io.reactivex.Observable
 
 class GitRepoRepository(context: Context) {
 
@@ -13,7 +14,7 @@ class GitRepoRepository(context: Context) {
 //        Handler().postDelayed({ onDataReadyCallback.onDataReady("new data") },2000)
 //    }
 
-    fun getGitRepositories(onRepositoryReadyCallback: OnRepositoryReadyCallback) {
+    fun getGitRepositories(): Observable<ArrayList<Repository>> {
 //        var arrayList = ArrayList<Repository>()
 //        arrayList.add(Repository("First", "Owner 1", 100 , false))
 //        arrayList.add(Repository("Second", "Owner 2", 30 , true))
@@ -50,6 +51,6 @@ class GitRepoRepository(context: Context) {
 //    fun onDataReady(data : String)
 //}
 
-interface OnRepositoryReadyCallback {
-    fun onDataReady(data: ArrayList<Repository>)
-}
+//interface OnRepositoryReadyCallback {
+//    fun onDataReady(data: ArrayList<Repository>)
+//}
